@@ -48,6 +48,7 @@
             this.pictureBox1.Size = new System.Drawing.Size(600, 600);
             this.pictureBox1.TabIndex = 0;
             this.pictureBox1.TabStop = false;
+            this.pictureBox1.Paint += new System.Windows.Forms.PaintEventHandler(this.PictureBox1_Paint);
             // 
             // button1
             // 
@@ -67,6 +68,7 @@
             this.button2.TabIndex = 2;
             this.button2.Text = "Линия";
             this.button2.UseVisualStyleBackColor = true;
+            this.button2.Click += new System.EventHandler(this.Button1_Click);
             // 
             // button3
             // 
@@ -76,6 +78,7 @@
             this.button3.TabIndex = 3;
             this.button3.Text = "Прямоугольник";
             this.button3.UseVisualStyleBackColor = true;
+            this.button3.Click += new System.EventHandler(this.Button1_Click);
             // 
             // button4
             // 
@@ -85,6 +88,7 @@
             this.button4.TabIndex = 4;
             this.button4.Text = "Квадрат";
             this.button4.UseVisualStyleBackColor = true;
+            this.button4.Click += new System.EventHandler(this.Button1_Click);
             // 
             // button5
             // 
@@ -94,6 +98,7 @@
             this.button5.TabIndex = 5;
             this.button5.Text = "Круг";
             this.button5.UseVisualStyleBackColor = true;
+            this.button5.Click += new System.EventHandler(this.Button1_Click);
             // 
             // button6
             // 
@@ -103,6 +108,7 @@
             this.button6.TabIndex = 6;
             this.button6.Text = "Эллипс";
             this.button6.UseVisualStyleBackColor = true;
+            this.button6.Click += new System.EventHandler(this.Button1_Click);
             // 
             // Form1
             // 
