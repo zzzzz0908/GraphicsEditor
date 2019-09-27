@@ -21,6 +21,8 @@ namespace GraphicsEditor
 
         private List<Rectangle> rectangles;
 
+        private Color color = Color.Black;
+
         public Form1()
         {
             InitializeComponent();
@@ -37,6 +39,9 @@ namespace GraphicsEditor
             currentFigType = (FigureType)buttonNumber;
 
             // подписать события
+            this.pictureBox1.MouseDown += new MouseEventHandler(this.pictureBox1_MouseDown);
+            this.pictureBox1.MouseMove += new MouseEventHandler(this.pictureBox1_MouseMove);
+            this.pictureBox1.MouseUp += new MouseEventHandler(this.pictureBox1_MouseUp);
 
         }
 
@@ -50,7 +55,10 @@ namespace GraphicsEditor
 
             graphics.FillRectangle(brush, new Rectangle(0, 0, width, height));
 
-            Pen pen = new Pen(Color.Magenta);
+            //Pen pen = new Pen(Color.Magenta);
+            Pen pen = new Pen(color);
+            pen.DashStyle = DashStyle.Solid;
+            pen.DashPattern = new float[] { 4, 3, 1, 3};
 
             if (rectangles.Count() > 0)
             {
@@ -59,11 +67,20 @@ namespace GraphicsEditor
 
             if (isDrawingInProgress)
             {
-                graphics.DrawRectangle(pen, new Rectangle(
-                   Math.Min(startPoint.X, endPoint.X),
-                   Math.Min(startPoint.Y, endPoint.Y),
-                   Math.Abs(startPoint.X - endPoint.X),
-                   Math.Abs(startPoint.Y - endPoint.Y)));
+                brush.Color = Color.Azure;
+                //graphics.FillRectangle(brush, new Rectangle(
+                //   Math.Min(startPoint.X, endPoint.X),
+                //   Math.Min(startPoint.Y, endPoint.Y),
+                //   Math.Abs(startPoint.X - endPoint.X),
+                //   Math.Abs(startPoint.Y - endPoint.Y)));
+
+                //graphics.DrawRectangle(pen, new Rectangle(
+                //   Math.Min(startPoint.X, endPoint.X),
+                //   Math.Min(startPoint.Y, endPoint.Y),
+                //   Math.Abs(startPoint.X - endPoint.X),
+                //   Math.Abs(startPoint.Y - endPoint.Y)));
+
+            
             }
 
             //Rectangle rect = new Rectangle(100, 100, 300, 200);
@@ -104,6 +121,14 @@ namespace GraphicsEditor
         {
             rectangles.Clear();
             pictureBox1.Refresh();
+        }
+
+        private void buttonColor_Click(object sender, EventArgs e)
+        {
+            if (colorDialog1.ShowDialog() == DialogResult.OK)
+            {
+                this.color = colorDialog1.Color;
+            }
         }
     }
 }

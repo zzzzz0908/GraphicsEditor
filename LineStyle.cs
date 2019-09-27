@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Drawing.Drawing2D;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -9,8 +10,8 @@ namespace GraphicsEditor
 {
     public struct LineStyle
     {
-        public int LineWidth { get; set; }
-        //public int LineType { get; set; }
-        public Color LineColor { get; set; }
+        public int Width { get; set; }
+        public DashStyle Type { get; set; }
+        public Color Color { get; set; }
     }
 }

@@ -10,6 +10,6 @@ namespace GraphicsEditor
     public struct FillStyle
     {
         public bool isFilled { get; set; }
-        public Color FillColor { get; set; }
+        public Color Color { get; set; }
     }
 }
