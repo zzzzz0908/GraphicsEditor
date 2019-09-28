@@ -39,12 +39,18 @@
             this.colorDialog1 = new System.Windows.Forms.ColorDialog();
             this.buttonColor = new System.Windows.Forms.Button();
             this.buttonFillColor = new System.Windows.Forms.Button();
+            this.fillCheckBox = new System.Windows.Forms.CheckBox();
+            this.comboBoxLineWidth = new System.Windows.Forms.ComboBox();
+            this.comboBoxDashStyle = new System.Windows.Forms.ComboBox();
+            this.label1 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
             // pictureBox1
             // 
-            this.pictureBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            this.pictureBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.pictureBox1.Location = new System.Drawing.Point(12, 103);
             this.pictureBox1.Name = "pictureBox1";
@@ -125,7 +131,7 @@
             // 
             // buttonColor
             // 
-            this.buttonColor.Location = new System.Drawing.Point(12, 53);
+            this.buttonColor.Location = new System.Drawing.Point(11, 60);
             this.buttonColor.Name = "buttonColor";
             this.buttonColor.Size = new System.Drawing.Size(100, 23);
             this.buttonColor.TabIndex = 8;
@@ -135,18 +141,72 @@
             // 
             // buttonFillColor
             // 
-            this.buttonFillColor.Location = new System.Drawing.Point(118, 53);
+            this.buttonFillColor.Location = new System.Drawing.Point(117, 60);
             this.buttonFillColor.Name = "buttonFillColor";
             this.buttonFillColor.Size = new System.Drawing.Size(100, 23);
             this.buttonFillColor.TabIndex = 9;
             this.buttonFillColor.Text = "Цвет заливки";
             this.buttonFillColor.UseVisualStyleBackColor = true;
+            this.buttonFillColor.Click += new System.EventHandler(this.buttonFillColor_Click);
+            // 
+            // fillCheckBox
+            // 
+            this.fillCheckBox.AutoSize = true;
+            this.fillCheckBox.Location = new System.Drawing.Point(223, 64);
+            this.fillCheckBox.Name = "fillCheckBox";
+            this.fillCheckBox.Size = new System.Drawing.Size(69, 17);
+            this.fillCheckBox.TabIndex = 10;
+            this.fillCheckBox.Text = "Заливка";
+            this.fillCheckBox.UseVisualStyleBackColor = true;
+            // 
+            // comboBoxLineWidth
+            // 
+            this.comboBoxLineWidth.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBoxLineWidth.FormattingEnabled = true;
+            this.comboBoxLineWidth.Location = new System.Drawing.Point(298, 62);
+            this.comboBoxLineWidth.Name = "comboBoxLineWidth";
+            this.comboBoxLineWidth.Size = new System.Drawing.Size(121, 21);
+            this.comboBoxLineWidth.TabIndex = 11;
+            // 
+            // comboBoxDashStyle
+            // 
+            this.comboBoxDashStyle.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBoxDashStyle.FormattingEnabled = true;
+            this.comboBoxDashStyle.Location = new System.Drawing.Point(425, 62);
+            this.comboBoxDashStyle.Name = "comboBoxDashStyle";
+            this.comboBoxDashStyle.Size = new System.Drawing.Size(121, 21);
+            this.comboBoxDashStyle.TabIndex = 12;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label1.Location = new System.Drawing.Point(299, 44);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(120, 15);
+            this.label1.TabIndex = 13;
+            this.label1.Text = "Толщина линий (px)";
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label2.Location = new System.Drawing.Point(425, 44);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(66, 15);
+            this.label2.TabIndex = 14;
+            this.label2.Text = "Тип линий";
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(624, 715);
+            this.Controls.Add(this.label2);
+            this.Controls.Add(this.label1);
+            this.Controls.Add(this.comboBoxDashStyle);
+            this.Controls.Add(this.comboBoxLineWidth);
+            this.Controls.Add(this.fillCheckBox);
             this.Controls.Add(this.buttonFillColor);
             this.Controls.Add(this.buttonColor);
             this.Controls.Add(this.button7);
@@ -161,6 +221,7 @@
             this.Text = "Graphics Editor";
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -177,6 +238,11 @@
         private System.Windows.Forms.ColorDialog colorDialog1;
         private System.Windows.Forms.Button buttonColor;
         private System.Windows.Forms.Button buttonFillColor;
+        private System.Windows.Forms.CheckBox fillCheckBox;
+        private System.Windows.Forms.ComboBox comboBoxLineWidth;
+        private System.Windows.Forms.ComboBox comboBoxDashStyle;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label label2;
     }
 }
 

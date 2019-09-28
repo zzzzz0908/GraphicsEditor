@@ -10,8 +10,7 @@ namespace GraphicsEditor
     class MyPoint : IFigure
     {
         Point Location { get; }
-
-
+        
         public void Draw(Graphics graphics)
         {
             throw new NotImplementedException();

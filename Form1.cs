@@ -14,22 +14,46 @@ namespace GraphicsEditor
     public partial class Form1 : Form
     {
         private FigureType currentFigType;
+
         private List<Point> points;
         private Point startPoint;
         private Point endPoint;
         private bool isDrawingInProgress = false;
 
+        private int width = 1;
+        private DashStyle dashStyle = DashStyle.Solid;
+
+        private Color lineColor = Color.Black;
+        private Color fillColor = Color.Transparent;
+
+
+        // debug
         private List<Rectangle> rectangles;
 
-        private Color color = Color.Black;
-
+       
         public Form1()
         {
             InitializeComponent();
-
+            
+            // debug
             points = new List<Point>();
-
             rectangles = new List<Rectangle>();
+
+
+
+            Dictionary<string, DashStyle> comboSource1 = new Dictionary<string, DashStyle>();
+            comboSource1.Add("Сплошная", DashStyle.Solid);
+            comboSource1.Add("Штриховая", DashStyle.Dash);
+            comboSource1.Add("Пунктирная", DashStyle.Dot);
+            comboSource1.Add("Штрихпунктир", DashStyle.DashDot);
+
+            comboBoxDashStyle.DataSource = new BindingSource(comboSource1, null);
+            comboBoxDashStyle.DisplayMember = "Value";
+            comboBoxDashStyle.ValueMember = "Key";
+
+            float[] widthArray = { 1, 2, 3, 4, 5, 7, 8, 9, 10, 12, 15, 20 };
+            comboBoxLineWidth.DataSource = new BindingSource(widthArray, null);
+
         }
 
         private void Button1_Click(object sender, EventArgs e)
@@ -55,11 +79,10 @@ namespace GraphicsEditor
 
             graphics.FillRectangle(brush, new Rectangle(0, 0, width, height));
 
-            //Pen pen = new Pen(Color.Magenta);
-            Pen pen = new Pen(color);
-            pen.DashStyle = DashStyle.Solid;
-            pen.DashPattern = new float[] { 4, 3, 1, 3};
 
+            Pen pen = new Pen(lineColor);
+            
+            pen.Width = (float)comboBoxLineWidth.SelectedItem;
             if (rectangles.Count() > 0)
             {
                 graphics.DrawRectangles(pen, rectangles.ToArray());
@@ -67,12 +90,12 @@ namespace GraphicsEditor
 
             if (isDrawingInProgress)
             {
-                brush.Color = Color.Azure;
-                //graphics.FillRectangle(brush, new Rectangle(
-                //   Math.Min(startPoint.X, endPoint.X),
-                //   Math.Min(startPoint.Y, endPoint.Y),
-                //   Math.Abs(startPoint.X - endPoint.X),
-                //   Math.Abs(startPoint.Y - endPoint.Y)));
+                brush.Color = Color.Transparent;
+                graphics.FillRectangle(brush, new Rectangle(
+                   Math.Min(startPoint.X, endPoint.X),
+                   Math.Min(startPoint.Y, endPoint.Y),
+                   Math.Abs(startPoint.X - endPoint.X),
+                   Math.Abs(startPoint.Y - endPoint.Y)));
 
                 //graphics.DrawRectangle(pen, new Rectangle(
                 //   Math.Min(startPoint.X, endPoint.X),
@@ -80,7 +103,7 @@ namespace GraphicsEditor
                 //   Math.Abs(startPoint.X - endPoint.X),
                 //   Math.Abs(startPoint.Y - endPoint.Y)));
 
-            
+
             }
 
             //Rectangle rect = new Rectangle(100, 100, 300, 200);
@@ -91,6 +114,9 @@ namespace GraphicsEditor
             //graphics.DrawRectangle(pen, new Rectangle(100, 100, 300, 200));
             //graphics.ResetTransform();
             //graphics.DrawRectangle(pen, new Rectangle(100, 100, 300, 200));
+            pen.Dispose();
+            brush.Dispose();
+            
         }
 
         private void pictureBox1_MouseDown(object sender, MouseEventArgs e)
@@ -127,7 +153,15 @@ namespace GraphicsEditor
         {
             if (colorDialog1.ShowDialog() == DialogResult.OK)
             {
-                this.color = colorDialog1.Color;
+                this.lineColor = colorDialog1.Color;
+            }
+        }
+
+        private void buttonFillColor_Click(object sender, EventArgs e)
+        {
+            if (colorDialog1.ShowDialog() == DialogResult.OK)
+            {
+                this.fillColor = colorDialog1.Color;
             }
         }
     }

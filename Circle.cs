@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Drawing.Drawing2D;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -28,8 +29,11 @@ namespace GraphicsEditor
             Pen pen = new Pen(BorderStyle.Color, BorderStyle.Width);
             pen.DashStyle = BorderStyle.Type;
             //установить паттерн
-            //pen.DashPattern = new float[] { 4, 3, 1, 3 };
-
+            if (BorderStyle.Type != DashStyle.Solid)
+            {
+                pen.DashPattern = DefaultDashPatterns.GetPattern(BorderStyle.Type);
+            }
+            
             //Point start = new Point(Center.X - Radius, Center.Y - Radius);
             //Point end = new Point(Center.X + Radius, Center.Y + Radius);
 
@@ -39,9 +43,12 @@ namespace GraphicsEditor
             {
                 SolidBrush brush = new SolidBrush(FillStyle.Color);
                 graphics.FillEllipse(brush, rect);
+                brush.Dispose();
             }
 
             graphics.DrawEllipse(pen, rect);
+
+            pen.Dispose();
         }
     }
 }
