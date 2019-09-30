@@ -13,23 +13,29 @@ namespace GraphicsEditor
 {
     public partial class Form1 : Form
     {
-        private FigureType currentFigType;
-
-        private List<Point> points;
-        private Point startPoint;
-        private Point endPoint;
+        private FigureType currentFigType;       
         private bool isDrawingInProgress = false;
 
         private int width = 1;
         private DashStyle dashStyle = DashStyle.Solid;
-
         private Color lineColor = Color.Black;
+
+        private bool isFilled = true;
         private Color fillColor = Color.Transparent;
 
+        private LineStyle LineStyle => new LineStyle(width, dashStyle, lineColor);
 
+        private FillStyle FillStyle => new FillStyle(isFilled, fillColor);
+
+
+
+
+        private List<Point> points;
+        private Point startPoint;
+        private Point endPoint;
         // debug
         private List<Rectangle> rectangles;
-
+        private List<IFigure> figures;
        
         public Form1()
         {
@@ -38,7 +44,7 @@ namespace GraphicsEditor
             // debug
             points = new List<Point>();
             rectangles = new List<Rectangle>();
-
+            figures = new List<IFigure>();
 
 
             Dictionary<string, DashStyle> comboSource1 = new Dictionary<string, DashStyle>();
@@ -56,17 +62,30 @@ namespace GraphicsEditor
 
         }
 
+        private void UnsubscribeMouseEvents()
+        {
+            
+        }
+
         private void Button1_Click(object sender, EventArgs e)
         {
             Button button = sender as Button;
             int buttonNumber = Int32.Parse(button.Name.Substring(6, 1));
             currentFigType = (FigureType)buttonNumber;
 
-            // подписать события
-            this.pictureBox1.MouseDown += new MouseEventHandler(this.pictureBox1_MouseDown);
-            this.pictureBox1.MouseMove += new MouseEventHandler(this.pictureBox1_MouseMove);
-            this.pictureBox1.MouseUp += new MouseEventHandler(this.pictureBox1_MouseUp);
+            // подписать события  
+            // создать массив handlers с индексами от фигур
+            // подпиcывать отписывать по индексам currentFigure
+            //this.pictureBox1.MouseDown += new MouseEventHandler(this.pictureBox1_MouseDown);
+            //this.pictureBox1.MouseMove += new MouseEventHandler(this.pictureBox1_MouseMove);
+            //this.pictureBox1.MouseUp += new MouseEventHandler(this.pictureBox1_MouseUp);
 
+            this.pictureBox1.MouseDown += new MouseEventHandler(this.Circle_MouseDown);
+            this.pictureBox1.MouseMove += new MouseEventHandler(this.Circle_MouseMove);
+            this.pictureBox1.MouseUp += new MouseEventHandler(this.Circle_MouseUp);
+
+
+            //Delegate del = (Delegate)this.pictureBox1.MouseUp;
         }
 
         private void PictureBox1_Paint(object sender, PaintEventArgs e)
@@ -83,19 +102,30 @@ namespace GraphicsEditor
             Pen pen = new Pen(lineColor);
             
             pen.Width = (float)comboBoxLineWidth.SelectedItem;
-            if (rectangles.Count() > 0)
+            //if (rectangles.Count() > 0)
+            //{
+            //    graphics.DrawRectangles(pen, rectangles.ToArray());
+            //}
+
+            if (figures.Count() > 0)
             {
-                graphics.DrawRectangles(pen, rectangles.ToArray());
+                foreach(IFigure figure in figures)
+                {
+                    figure.Draw(graphics);
+                }
             }
+
 
             if (isDrawingInProgress)
             {
                 brush.Color = Color.Transparent;
-                graphics.FillRectangle(brush, new Rectangle(
-                   Math.Min(startPoint.X, endPoint.X),
-                   Math.Min(startPoint.Y, endPoint.Y),
-                   Math.Abs(startPoint.X - endPoint.X),
-                   Math.Abs(startPoint.Y - endPoint.Y)));
+                var circle = new Circle(startPoint, startPoint.Distance(endPoint), LineStyle, FillStyle);
+                circle.Draw(graphics);
+                //graphics.FillRectangle(brush, new Rectangle(
+                //   Math.Min(startPoint.X, endPoint.X),
+                //   Math.Min(startPoint.Y, endPoint.Y),
+                //   Math.Abs(startPoint.X - endPoint.X),
+                //   Math.Abs(startPoint.Y - endPoint.Y)));
 
                 //graphics.DrawRectangle(pen, new Rectangle(
                 //   Math.Min(startPoint.X, endPoint.X),
@@ -145,7 +175,7 @@ namespace GraphicsEditor
 
         private void clearDrawing(object sender, EventArgs e)
         {
-            rectangles.Clear();
+            figures.Clear();
             pictureBox1.Refresh();
         }
 
@@ -164,5 +194,25 @@ namespace GraphicsEditor
                 this.fillColor = colorDialog1.Color;
             }
         }
+
+        private void Circle_MouseDown(object sender, MouseEventArgs e)
+        {
+            startPoint = e.Location;
+            isDrawingInProgress = true;
+        }
+
+        private void Circle_MouseMove(object sender, MouseEventArgs e)
+        {
+            endPoint = e.Location;
+            pictureBox1.Refresh();
+        }
+
+        private void Circle_MouseUp(object sender, MouseEventArgs e)
+        {
+            endPoint = e.Location;
+            figures.Add(new Circle(startPoint, startPoint.Distance(endPoint), LineStyle, FillStyle));
+            isDrawingInProgress = false;            
+        }
+
     }
 }
