@@ -107,10 +107,9 @@ namespace GraphicsEditor
 
 
             // debug
-            points = new List<Point>();
-
-
+            points = new List<Point>();                       
         }
+
 
         private void UnsubscribeMouseEvents()
         {
@@ -133,6 +132,12 @@ namespace GraphicsEditor
             {
                 pictureBox1.MouseUp -= handler;
             }
+        }
+
+        private void clearDrawing(object sender, EventArgs e)
+        {
+            figures.Clear();
+            pictureBox1.Refresh();
         }
 
         private void Button1_Click(object sender, EventArgs e)
@@ -201,9 +206,10 @@ namespace GraphicsEditor
 
             if (isDrawingInProgress)
             {
-                brush.Color = Color.Transparent;
-                var circle = new Circle(startPoint, startPoint.Distance(endPoint), LineStyle, FillStyle);
-                circle.Draw(graphics);
+                if (tempFigure != null) tempFigure.Draw(graphics);
+                //brush.Color = Color.Transparent;
+                //var circle = new Circle(startPoint, startPoint.Distance(endPoint), LineStyle, FillStyle);
+                //circle.Draw(graphics);
                 //graphics.FillRectangle(brush, new Rectangle(
                 //   Math.Min(startPoint.X, endPoint.X),
                 //   Math.Min(startPoint.Y, endPoint.Y),
@@ -232,11 +238,7 @@ namespace GraphicsEditor
             
         }
 
-        private void clearDrawing(object sender, EventArgs e)
-        {
-            figures.Clear();
-            pictureBox1.Refresh();
-        }
+        
 
 
 
@@ -278,9 +280,11 @@ namespace GraphicsEditor
             {
                 figures.Add(new PolyLine(LineStyle, points.ToArray()));
                 points.Clear();
+                isDrawingInProgress = false;
             }
             else 
             {
+                isDrawingInProgress = true;
                 points.Add(e.Location);
             }
             
@@ -290,8 +294,14 @@ namespace GraphicsEditor
         private void PolyLine_MouseMove(object sender, MouseEventArgs e)
         {
             // TODO
-            endPoint = e.Location;
-            pictureBox1.Refresh();
+            if (isDrawingInProgress)
+            {
+                //endPoint = e.Location;
+                List<Point> tempPoints = new List<Point>(points);
+                tempPoints.Add(e.Location);
+                tempFigure = new PolyLine(LineStyle, tempPoints.ToArray());
+                pictureBox1.Refresh();
+            }            
         }
         #endregion
 
@@ -349,14 +359,18 @@ namespace GraphicsEditor
 
         private void Circle_MouseMove(object sender, MouseEventArgs e)
         {
-            endPoint = e.Location;
-            pictureBox1.Refresh();
+            if (isDrawingInProgress)
+            {
+                //endPoint = e.Location;
+                tempFigure = new Circle(startPoint, startPoint.Distance(e.Location), LineStyle, FillStyle);
+                pictureBox1.Refresh();
+            }            
         }
 
         private void Circle_MouseUp(object sender, MouseEventArgs e)
         {
-            endPoint = e.Location;
-            figures.Add(new Circle(startPoint, startPoint.Distance(endPoint), LineStyle, FillStyle));
+            //endPoint = e.Location;
+            figures.Add(new Circle(startPoint, startPoint.Distance(e.Location), LineStyle, FillStyle));
             isDrawingInProgress = false;            
         }
         #endregion
