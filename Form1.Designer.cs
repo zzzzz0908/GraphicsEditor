@@ -135,15 +135,15 @@
             // 
             this.buttonColor.Location = new System.Drawing.Point(11, 60);
             this.buttonColor.Name = "buttonColor";
-            this.buttonColor.Size = new System.Drawing.Size(100, 23);
+            this.buttonColor.Size = new System.Drawing.Size(157, 23);
             this.buttonColor.TabIndex = 8;
-            this.buttonColor.Text = "Цвет линии";
+            this.buttonColor.Text = "Цвет линии/точки";
             this.buttonColor.UseVisualStyleBackColor = true;
             this.buttonColor.Click += new System.EventHandler(this.buttonColor_Click);
             // 
             // buttonFillColor
             // 
-            this.buttonFillColor.Location = new System.Drawing.Point(117, 60);
+            this.buttonFillColor.Location = new System.Drawing.Point(174, 60);
             this.buttonFillColor.Name = "buttonFillColor";
             this.buttonFillColor.Size = new System.Drawing.Size(100, 23);
             this.buttonFillColor.TabIndex = 9;
@@ -154,7 +154,7 @@
             // fillCheckBox
             // 
             this.fillCheckBox.AutoSize = true;
-            this.fillCheckBox.Location = new System.Drawing.Point(223, 64);
+            this.fillCheckBox.Location = new System.Drawing.Point(283, 64);
             this.fillCheckBox.Name = "fillCheckBox";
             this.fillCheckBox.Size = new System.Drawing.Size(69, 17);
             this.fillCheckBox.TabIndex = 10;
@@ -165,7 +165,7 @@
             // 
             this.comboBoxLineWidth.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBoxLineWidth.FormattingEnabled = true;
-            this.comboBoxLineWidth.Location = new System.Drawing.Point(298, 62);
+            this.comboBoxLineWidth.Location = new System.Drawing.Point(364, 62);
             this.comboBoxLineWidth.Name = "comboBoxLineWidth";
             this.comboBoxLineWidth.Size = new System.Drawing.Size(121, 21);
             this.comboBoxLineWidth.TabIndex = 11;
@@ -174,7 +174,7 @@
             // 
             this.comboBoxDashStyle.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBoxDashStyle.FormattingEnabled = true;
-            this.comboBoxDashStyle.Location = new System.Drawing.Point(425, 62);
+            this.comboBoxDashStyle.Location = new System.Drawing.Point(491, 62);
             this.comboBoxDashStyle.Name = "comboBoxDashStyle";
             this.comboBoxDashStyle.Size = new System.Drawing.Size(121, 21);
             this.comboBoxDashStyle.TabIndex = 12;
@@ -183,7 +183,7 @@
             // 
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label1.Location = new System.Drawing.Point(299, 44);
+            this.label1.Location = new System.Drawing.Point(365, 44);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(120, 15);
             this.label1.TabIndex = 13;
@@ -193,7 +193,7 @@
             // 
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label2.Location = new System.Drawing.Point(425, 44);
+            this.label2.Location = new System.Drawing.Point(491, 44);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(66, 15);
             this.label2.TabIndex = 14;

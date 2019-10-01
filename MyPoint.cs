@@ -7,13 +7,26 @@ using System.Threading.Tasks;
 
 namespace GraphicsEditor
 {
-    class MyPoint : IFigure
+    public class MyPoint : IFigure
     {
-        Point Location { get; }
+        public MyPoint(Point location, Color color)
+        {
+            Location = location;
+            Color = color;
+        }
+
+        public Point Location { get; }
+        public Color Color { get; }
         
         public void Draw(Graphics graphics)
         {
-            throw new NotImplementedException();
+            int size = 5;
+            Pen pen = new Pen(Color);
+            graphics.DrawEllipse(pen, Location.X - size, Location.Y - size, size * 2, size * 2);
+            graphics.DrawLine(pen, Location.X - size - 2, Location.Y, Location.X + size + 2, Location.Y);
+            graphics.DrawLine(pen, Location.X, Location.Y - size - 2, Location.X, Location.Y + size + 2);
+
+            pen.Dispose();
         }
     }
 }

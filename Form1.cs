@@ -80,24 +80,31 @@ namespace GraphicsEditor
             //this.pictureBox1.MouseMove += new MouseEventHandler(this.pictureBox1_MouseMove);
             //this.pictureBox1.MouseUp += new MouseEventHandler(this.pictureBox1_MouseUp);
 
-            this.pictureBox1.MouseDown += new MouseEventHandler(this.Circle_MouseDown);
-            this.pictureBox1.MouseMove += new MouseEventHandler(this.Circle_MouseMove);
-            this.pictureBox1.MouseUp += new MouseEventHandler(this.Circle_MouseUp);
+            //this.pictureBox1.MouseDown += new MouseEventHandler(this.Circle_MouseDown);
+            //this.pictureBox1.MouseMove += new MouseEventHandler(this.Circle_MouseMove);
+            //this.pictureBox1.MouseUp += new MouseEventHandler(this.Circle_MouseUp);
 
+            //this.pictureBox1.MouseClick += new MouseEventHandler(Point_MouseClick);
+            this.pictureBox1.MouseClick += new MouseEventHandler(PolyLine_MouseClick);
 
             //Delegate del = (Delegate)this.pictureBox1.MouseUp;
         }
 
+
+
+
         private void PictureBox1_Paint(object sender, PaintEventArgs e)
         {
             Graphics graphics = e.Graphics;
+            //graphics.SmoothingMode = SmoothingMode.AntiAlias;
+
             SolidBrush brush = new SolidBrush(Color.White);
 
             int height = pictureBox1.Height;
             int width = pictureBox1.Width;
 
-            graphics.FillRectangle(brush, new Rectangle(0, 0, width, height));
-
+            //graphics.FillRectangle(brush, new Rectangle(0, 0, width, height));
+            graphics.Clear(Color.White);
 
             Pen pen = new Pen(lineColor);
             
@@ -149,6 +156,15 @@ namespace GraphicsEditor
             
         }
 
+        private void clearDrawing(object sender, EventArgs e)
+        {
+            figures.Clear();
+            pictureBox1.Refresh();
+        }
+
+
+
+
         private void pictureBox1_MouseDown(object sender, MouseEventArgs e)
         {
             startPoint = e.Location;
@@ -173,11 +189,7 @@ namespace GraphicsEditor
             pictureBox1.Refresh();
         }
 
-        private void clearDrawing(object sender, EventArgs e)
-        {
-            figures.Clear();
-            pictureBox1.Refresh();
-        }
+        
 
         private void buttonColor_Click(object sender, EventArgs e)
         {
@@ -195,6 +207,45 @@ namespace GraphicsEditor
             }
         }
 
+
+        #region PointMouseEvents
+        private void Point_MouseClick(object sender, MouseEventArgs e)
+        {
+            figures.Add(new MyPoint(e.Location, lineColor));
+            pictureBox1.Refresh();
+        }
+        #endregion
+
+
+        #region PolyLineMouseEvents
+        private void PolyLine_MouseClick(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Right)
+            {
+                figures.Add(new PolyLine(LineStyle, points.ToArray()));
+                points.Clear();
+            }
+            else 
+            {
+                points.Add(e.Location);
+            }
+            
+            pictureBox1.Refresh();
+        }
+        #endregion
+
+
+        #region RectangleMouseEvents
+
+        #endregion
+
+
+        #region SquareMouseEvents
+
+        #endregion
+
+
+        #region CircleMouseEvents
         private void Circle_MouseDown(object sender, MouseEventArgs e)
         {
             startPoint = e.Location;
@@ -213,6 +264,15 @@ namespace GraphicsEditor
             figures.Add(new Circle(startPoint, startPoint.Distance(endPoint), LineStyle, FillStyle));
             isDrawingInProgress = false;            
         }
+        #endregion
+
+
+
+        #region EllipseMouseEvents
+
+        #endregion
+
+
 
     }
 }
