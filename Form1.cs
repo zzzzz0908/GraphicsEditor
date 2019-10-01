@@ -13,10 +13,10 @@ namespace GraphicsEditor
 {
     public partial class Form1 : Form
     {
-        private FigureType currentFigType;       
+        //private FigureType currentFigType;       
         private bool isDrawingInProgress = false;
 
-        private int width = 1;
+        private int lineWidth = 1;
         private int angle = 0;
         private DashStyle dashStyle = DashStyle.Solid;
         private Color lineColor = Color.Black;
@@ -24,7 +24,7 @@ namespace GraphicsEditor
         private bool isFilled = true;
         private Color fillColor = Color.Transparent;
 
-        private LineStyle LineStyle => new LineStyle(width, dashStyle, lineColor);
+        private LineStyle LineStyle => new LineStyle(lineWidth, dashStyle, lineColor);
 
         private FillStyle FillStyle => new FillStyle(isFilled, fillColor);
                              
@@ -50,6 +50,7 @@ namespace GraphicsEditor
 
             fillCheckBox.Checked = isFilled;
             figures = new List<IFigure>();
+            points = new List<Point>();
 
             Dictionary<string, DashStyle> comboSource1 = new Dictionary<string, DashStyle>();
             comboSource1.Add("Сплошная", DashStyle.Solid);
@@ -61,7 +62,7 @@ namespace GraphicsEditor
             comboBoxDashStyle.DisplayMember = "Value";
             comboBoxDashStyle.ValueMember = "Key";
 
-            float[] widthArray = { 1, 2, 3, 4, 5, 7, 8, 9, 10, 12, 15, 20 };
+            int[] widthArray = { 1, 2, 3, 4, 5, 7, 8, 9, 10, 12, 15, 20 };
             comboBoxLineWidth.DataSource = new BindingSource(widthArray, null);
 
 
@@ -107,7 +108,7 @@ namespace GraphicsEditor
 
 
             // debug
-            points = new List<Point>();                       
+                                   
         }
 
 
@@ -144,7 +145,7 @@ namespace GraphicsEditor
         {
             Button button = sender as Button;
             int figureIdx = Int32.Parse(button.Name.Substring(6, 1));
-            currentFigType = (FigureType)figureIdx;
+            //currentFigType = (FigureType)figureIdx;
 
             UnsubscribeMouseEvents();
 
@@ -160,7 +161,7 @@ namespace GraphicsEditor
         private void PictureBox1_Paint(object sender, PaintEventArgs e)
         {
             Graphics graphics = e.Graphics;
-            //graphics.SmoothingMode = SmoothingMode.AntiAlias;
+            graphics.SmoothingMode = SmoothingMode.AntiAlias;
             graphics.Clear(Color.White);
 
             if (figures.Count() > 0)
@@ -188,31 +189,6 @@ namespace GraphicsEditor
             //pen.Dispose();
             //brush.Dispose();            
         }
-
-        
-
-
-
-        #region ControlsEvents
-        private void buttonColor_Click(object sender, EventArgs e)
-        {
-            if (colorDialog1.ShowDialog() == DialogResult.OK)
-            {
-                this.lineColor = colorDialog1.Color;
-            }
-        }
-
-        private void buttonFillColor_Click(object sender, EventArgs e)
-        {
-            if (colorDialog1.ShowDialog() == DialogResult.OK)
-            {
-                this.fillColor = colorDialog1.Color;
-            }
-        }
-
-
-        #endregion
-
 
 
         #region PointMouseEvents
@@ -264,8 +240,11 @@ namespace GraphicsEditor
 
         private void Rectangle_MouseMove(object sender, MouseEventArgs e)
         {
-            tempFigure = new MyRectangle(startPoint, e.Location, angle, LineStyle, FillStyle);
-            pictureBox1.Refresh();
+            if (isDrawingInProgress)
+            {
+                tempFigure = new MyRectangle(startPoint, e.Location, angle, LineStyle, FillStyle);
+                pictureBox1.Refresh();
+            }            
         }
 
         private void Rectangle_MouseUp(object sender, MouseEventArgs e)
@@ -332,8 +311,11 @@ namespace GraphicsEditor
 
         private void Ellipse_MouseMove(object sender, MouseEventArgs e)
         {
-            tempFigure = new Ellipse(startPoint, e.Location, angle, LineStyle, FillStyle);
-            pictureBox1.Refresh();
+            if (isDrawingInProgress)
+            {
+                tempFigure = new Ellipse(startPoint, e.Location, angle, LineStyle, FillStyle);
+                pictureBox1.Refresh();
+            }            
         }
 
         private void Ellipse_MouseUp(object sender, MouseEventArgs e)
@@ -341,8 +323,55 @@ namespace GraphicsEditor
             figures.Add(new Ellipse(startPoint, e.Location, angle, LineStyle, FillStyle));
             isDrawingInProgress = false;
         }
+
         #endregion
 
-        
+
+
+        #region ControlsEvents
+        private void buttonColor_Click(object sender, EventArgs e)
+        {
+            if (colorDialog1.ShowDialog() == DialogResult.OK)
+            {
+                this.lineColor = colorDialog1.Color;
+            }
+        }
+
+        private void buttonFillColor_Click(object sender, EventArgs e)
+        {
+            if (colorDialog1.ShowDialog() == DialogResult.OK)
+            {
+                this.fillColor = colorDialog1.Color;
+            }
+        }
+
+        private void fillCheckBox_CheckedChanged(object sender, EventArgs e)
+        {
+            CheckBox checkBox = sender as CheckBox;
+            isFilled = checkBox.Checked;
+        }
+
+        private void comboBoxLineWidth_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            ComboBox comboBox = sender as ComboBox;
+            lineWidth = (int)comboBox.SelectedItem;
+        }
+
+        private void comboBoxDashStyle_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            ComboBox comboBox = sender as ComboBox;
+            var item = (KeyValuePair<string, DashStyle>)comboBox.SelectedItem;
+            dashStyle = item.Value;
+        }
+
+        private void trackBar1_ValueChanged(object sender, EventArgs e)
+        {
+            TrackBar trackBar = sender as TrackBar;
+            angle = trackBar.Value;
+        }
+
+        #endregion
+
+
     }
 }
