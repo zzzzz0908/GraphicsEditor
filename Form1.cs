@@ -29,7 +29,7 @@ namespace GraphicsEditor
         private FillStyle FillStyle => new FillStyle(isFilled, fillColor);
                              
         private Point startPoint;
-        private Point endPoint;
+        //private Point endPoint;
 
         private List<IFigure> figures;
         private List<Point> points;
@@ -152,27 +152,6 @@ namespace GraphicsEditor
             pictureBox1.MouseMove += moveEventHandlers[figureIdx];
             pictureBox1.MouseDown += downEventHandlers[figureIdx];
             pictureBox1.MouseUp += upEventHandlers[figureIdx];
-
-            // подписать события  
-            // создать массив handlers с индексами от фигур
-            // подпиcывать отписывать по индексам currentFigure
-            //this.pictureBox1.MouseDown += new MouseEventHandler(this.pictureBox1_MouseDown);
-            //this.pictureBox1.MouseMove += new MouseEventHandler(this.pictureBox1_MouseMove);
-            //this.pictureBox1.MouseUp += new MouseEventHandler(this.pictureBox1_MouseUp);
-
-            //this.pictureBox1.MouseDown += new MouseEventHandler(this.Circle_MouseDown);
-            //this.pictureBox1.MouseMove += new MouseEventHandler(this.Circle_MouseMove);
-            //this.pictureBox1.MouseUp += new MouseEventHandler(this.Circle_MouseUp);
-
-            //this.pictureBox1.MouseClick += new MouseEventHandler(Point_MouseClick);
-
-
-            //MouseEventHandler a = new MouseEventHandler(PolyLine_MouseClick);
-            //this.pictureBox1.MouseClick += a;
-
-
-
-            //Delegate del = (Delegate)this.pictureBox1.MouseUp;
         }
 
 
@@ -192,50 +171,22 @@ namespace GraphicsEditor
                 }
             }
 
-
-            // debug
-            SolidBrush brush = new SolidBrush(Color.White); 
-            Pen pen = new Pen(lineColor);
-            
-            pen.Width = (float)comboBoxLineWidth.SelectedItem;
-            //if (rectangles.Count() > 0)
-            //{
-            //    graphics.DrawRectangles(pen, rectangles.ToArray());
-            //}
-                      
-
             if (isDrawingInProgress)
             {
                 if (tempFigure != null) tempFigure.Draw(graphics);
-                //brush.Color = Color.Transparent;
-                //var circle = new Circle(startPoint, startPoint.Distance(endPoint), LineStyle, FillStyle);
-                //circle.Draw(graphics);
-                //graphics.FillRectangle(brush, new Rectangle(
-                //   Math.Min(startPoint.X, endPoint.X),
-                //   Math.Min(startPoint.Y, endPoint.Y),
-                //   Math.Abs(startPoint.X - endPoint.X),
-                //   Math.Abs(startPoint.Y - endPoint.Y)));
-
-                //graphics.DrawRectangle(pen, new Rectangle(
-                //   Math.Min(startPoint.X, endPoint.X),
-                //   Math.Min(startPoint.Y, endPoint.Y),
-                //   Math.Abs(startPoint.X - endPoint.X),
-                //   Math.Abs(startPoint.Y - endPoint.Y)));
-
-
             }
 
-            //Rectangle rect = new Rectangle(100, 100, 300, 200);
-            //Matrix m = new Matrix();
-            //m.RotateAt(45, new PointF(rect.Left + (rect.Width / 2), rect.Top + (rect.Height / 2)));
 
-            //graphics.Transform = m;
-            //graphics.DrawRectangle(pen, new Rectangle(100, 100, 300, 200));
-            //graphics.ResetTransform();
-            //graphics.DrawRectangle(pen, new Rectangle(100, 100, 300, 200));
-            pen.Dispose();
-            brush.Dispose();
+            // debug
+            //SolidBrush brush = new SolidBrush(Color.White); 
+            //Pen pen = new Pen(lineColor);            
+            //pen.Width = (float)comboBoxLineWidth.SelectedItem;
+
+            //var a = new MyRectangle(new Point(300, 300), new Point(200, 500), 30, LineStyle, FillStyle);
+            //a.Draw(graphics);
             
+            //pen.Dispose();
+            //brush.Dispose();            
         }
 
         
@@ -293,10 +244,8 @@ namespace GraphicsEditor
 
         private void PolyLine_MouseMove(object sender, MouseEventArgs e)
         {
-            // TODO
             if (isDrawingInProgress)
             {
-                //endPoint = e.Location;
                 List<Point> tempPoints = new List<Point>(points);
                 tempPoints.Add(e.Location);
                 tempFigure = new PolyLine(LineStyle, tempPoints.ToArray());
@@ -315,14 +264,14 @@ namespace GraphicsEditor
 
         private void Rectangle_MouseMove(object sender, MouseEventArgs e)
         {
-            endPoint = e.Location;
+            tempFigure = new MyRectangle(startPoint, e.Location, angle, LineStyle, FillStyle);
             pictureBox1.Refresh();
         }
 
         private void Rectangle_MouseUp(object sender, MouseEventArgs e)
         {
-            endPoint = e.Location;
-            figures.Add(new MyRectangle(startPoint, endPoint, angle, LineStyle, FillStyle));
+            figures.Add(new MyRectangle(startPoint, e.Location, angle, LineStyle, FillStyle));
+            tempFigure = null;
             isDrawingInProgress = false;
         }
         #endregion
@@ -337,14 +286,14 @@ namespace GraphicsEditor
 
         private void Square_MouseMove(object sender, MouseEventArgs e)
         {
-            endPoint = e.Location;
+            //endPoint = e.Location;
             pictureBox1.Refresh();
         }
 
         private void Square_MouseUp(object sender, MouseEventArgs e)
         {
-            endPoint = e.Location;
-            figures.Add(new Circle(startPoint, startPoint.Distance(endPoint), LineStyle, FillStyle));
+            //endPoint = e.Location;
+            //figures.Add(new Circle(startPoint, startPoint.Distance(endPoint), LineStyle, FillStyle));
             isDrawingInProgress = false;
         }
         #endregion
@@ -360,8 +309,7 @@ namespace GraphicsEditor
         private void Circle_MouseMove(object sender, MouseEventArgs e)
         {
             if (isDrawingInProgress)
-            {
-                //endPoint = e.Location;
+            {                
                 tempFigure = new Circle(startPoint, startPoint.Distance(e.Location), LineStyle, FillStyle);
                 pictureBox1.Refresh();
             }            
@@ -369,7 +317,6 @@ namespace GraphicsEditor
 
         private void Circle_MouseUp(object sender, MouseEventArgs e)
         {
-            //endPoint = e.Location;
             figures.Add(new Circle(startPoint, startPoint.Distance(e.Location), LineStyle, FillStyle));
             isDrawingInProgress = false;            
         }
@@ -385,14 +332,13 @@ namespace GraphicsEditor
 
         private void Ellipse_MouseMove(object sender, MouseEventArgs e)
         {
-            endPoint = e.Location;
+            tempFigure = new Ellipse(startPoint, e.Location, angle, LineStyle, FillStyle);
             pictureBox1.Refresh();
         }
 
         private void Ellipse_MouseUp(object sender, MouseEventArgs e)
         {
-            endPoint = e.Location;
-            figures.Add(new Ellipse(startPoint, endPoint, angle, LineStyle, FillStyle));
+            figures.Add(new Ellipse(startPoint, e.Location, angle, LineStyle, FillStyle));
             isDrawingInProgress = false;
         }
         #endregion
