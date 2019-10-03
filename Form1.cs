@@ -21,8 +21,8 @@ namespace GraphicsEditor
         private DashStyle dashStyle = DashStyle.Solid;
         private Color lineColor = Color.Black;
 
-        private bool isFilled = true;
-        private Color fillColor = Color.Transparent;
+        private bool isFilled = false;
+        private Color fillColor = Color.Black;
 
         private LineStyle LineStyle => new LineStyle(lineWidth, dashStyle, lineColor);
 
