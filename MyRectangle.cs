@@ -63,9 +63,10 @@ namespace GraphicsEditor
         public Size GetHalfSize()
         {
             Point center = new Point((StartPoint.X + EndPoint.X) / 2, (StartPoint.Y + EndPoint.Y) / 2);
-            double angle = Angle / 180.0 * Math.PI;
-            int dx = center.X - EndPoint.X;
-            int dy = center.Y - EndPoint.Y;
+            double angle = Angle / 180.0 * Math.PI;            
+
+            int dx = EndPoint.X - center.X;
+            int dy = EndPoint.Y - center.Y;
 
             int halfWidth = (int)Abs(Math.Round(dy * Sin(angle) + dx * Cos(angle)));
             int halfHeight = (int)Abs(Math.Round(dy * Cos(angle) - dx * Sin(angle)));

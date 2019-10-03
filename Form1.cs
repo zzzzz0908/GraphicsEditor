@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using static System.Math;
 
 namespace GraphicsEditor
 {
@@ -133,30 +134,7 @@ namespace GraphicsEditor
                 pictureBox1.MouseUp -= handler;
             }
         }
-
-        private void clearDrawing(object sender, EventArgs e)
-        {
-            figures.Clear();
-            pictureBox1.Refresh();
-        }
-
-        private void Button1_Click(object sender, EventArgs e)
-        {
-            Button button = sender as Button;
-            int figureIdx = Int32.Parse(button.Name.Substring(6, 1));
-            //currentFigType = (FigureType)figureIdx;
-
-            UnsubscribeMouseEvents();
-
-            pictureBox1.MouseClick += clickEventHandlers[figureIdx];
-            pictureBox1.MouseMove += moveEventHandlers[figureIdx];
-            pictureBox1.MouseDown += downEventHandlers[figureIdx];
-            pictureBox1.MouseUp += upEventHandlers[figureIdx];
-        }
-
-
-
-
+                 
         private void PictureBox1_Paint(object sender, PaintEventArgs e)
         {
             Graphics graphics = e.Graphics;
@@ -257,15 +235,18 @@ namespace GraphicsEditor
         {
             if (isDrawingInProgress)
             {
-                tempFigure = new MyRectangle(startPoint, e.Location, angle, LineStyle, FillStyle);
+                Point endPoint = e.Location;
+                Point targetPoint = Helper.GetSquareOppositeCorner(startPoint, endPoint, angle);
+                tempFigure = new MyRectangle(startPoint, targetPoint, angle, LineStyle, FillStyle);
                 pictureBox1.Refresh();
             }
         }
 
         private void Square_MouseUp(object sender, MouseEventArgs e)
         {
-            Point endPoint = new Point();
-            figures.Add(new MyRectangle(startPoint, endPoint, angle, LineStyle, FillStyle));
+            Point endPoint = e.Location;
+            Point targetPoint = Helper.GetSquareOppositeCorner(startPoint, endPoint, angle);
+            figures.Add(new MyRectangle(startPoint, targetPoint, angle, LineStyle, FillStyle));
             tempFigure = null;
             isDrawingInProgress = false;
         }
@@ -323,6 +304,25 @@ namespace GraphicsEditor
 
 
         #region ControlsEvents
+        private void clearDrawing(object sender, EventArgs e)
+        {
+            figures.Clear();
+            pictureBox1.Refresh();
+        }
+
+        private void Button1_Click(object sender, EventArgs e)
+        {
+            Button button = sender as Button;
+            int figureIdx = Int32.Parse(button.Name.Substring(6, 1));
+
+            UnsubscribeMouseEvents();
+
+            pictureBox1.MouseClick += clickEventHandlers[figureIdx];
+            pictureBox1.MouseMove += moveEventHandlers[figureIdx];
+            pictureBox1.MouseDown += downEventHandlers[figureIdx];
+            pictureBox1.MouseUp += upEventHandlers[figureIdx];
+        }
+        
         private void buttonColor_Click(object sender, EventArgs e)
         {
             if (colorDialog1.ShowDialog() == DialogResult.OK)
