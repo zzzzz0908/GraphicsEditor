@@ -13,7 +13,6 @@ namespace GraphicsEditor
 {
     public partial class Form1 : Form
     {
-        //private FigureType currentFigType;       
         private bool isDrawingInProgress = false;
 
         private int lineWidth = 1;
@@ -176,18 +175,6 @@ namespace GraphicsEditor
             {
                 if (tempFigure != null) tempFigure.Draw(graphics);
             }
-
-
-            // debug
-            //SolidBrush brush = new SolidBrush(Color.White); 
-            //Pen pen = new Pen(lineColor);            
-            //pen.Width = (float)comboBoxLineWidth.SelectedItem;
-
-            //var a = new MyRectangle(new Point(300, 300), new Point(200, 500), 30, LineStyle, FillStyle);
-            //a.Draw(graphics);
-            
-            //pen.Dispose();
-            //brush.Dispose();            
         }
 
 
