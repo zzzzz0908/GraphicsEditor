@@ -194,8 +194,11 @@ namespace GraphicsEditor
         #region PointMouseEvents
         private void Point_MouseClick(object sender, MouseEventArgs e)
         {
-            figures.Add(new MyPoint(e.Location, lineColor));
-            pictureBox1.Refresh();
+            if (e.Button == MouseButtons.Left)
+            {
+                figures.Add(new MyPoint(e.Location, lineColor));
+                pictureBox1.Refresh();
+            }
         }
         #endregion
 
@@ -205,7 +208,7 @@ namespace GraphicsEditor
         {
             if (e.Button == MouseButtons.Right)
             {
-                figures.Add(new PolyLine(LineStyle, points.ToArray()));
+                if (points.Count > 1) figures.Add(new PolyLine(LineStyle, points.ToArray()));
                 points.Clear();
                 isDrawingInProgress = false;
             }
@@ -265,14 +268,18 @@ namespace GraphicsEditor
 
         private void Square_MouseMove(object sender, MouseEventArgs e)
         {
-            //endPoint = e.Location;
-            pictureBox1.Refresh();
+            if (isDrawingInProgress)
+            {
+                tempFigure = new MyRectangle(startPoint, e.Location, angle, LineStyle, FillStyle);
+                pictureBox1.Refresh();
+            }
         }
 
         private void Square_MouseUp(object sender, MouseEventArgs e)
         {
-            //endPoint = e.Location;
-            //figures.Add(new Circle(startPoint, startPoint.Distance(endPoint), LineStyle, FillStyle));
+            Point endPoint = new Point();
+            figures.Add(new MyRectangle(startPoint, endPoint, angle, LineStyle, FillStyle));
+            tempFigure = null;
             isDrawingInProgress = false;
         }
         #endregion
